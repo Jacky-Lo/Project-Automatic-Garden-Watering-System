@@ -3,7 +3,7 @@ int moisture = A1;
 int smoke_detect = A0;
 
 int analogSmoke = 0;
-int sensorthres = 380;
+int sensorthres = 390;
 
 // motor A valve
 int enA = 0;
@@ -42,7 +42,10 @@ analogSmoke = analogRead(smoke_detect);
 moistureData = analogRead(moisture);
 
 Serial.print("The moisture of the earth is ");
+Serial.println(moistureData);
+Serial.print("The smoke level is ");
 Serial.println(analogSmoke);
+Serial.println("\n");
 delay(1000);
 
 if (moistureData >= 520){
@@ -50,34 +53,35 @@ if (moistureData >= 520){
   digitalWrite(in1, LOW);
   digitalWrite(in2, HIGH);
   analogWrite(enA, 200);
-  delay(350);
+  delay(250);
   digitalWrite(in2, LOW);
 
   // sprinkler let's goooo
    digitalWrite(in3, HIGH);
   digitalWrite(in4, LOW);
-  analogWrite(enB, 255);
+  analogWrite(enB, 200);
 
   // turn off green led
   digitalWrite(greenLED, LOW);
  
 }
-else if(moistureData <= 375 ){
+else if(moistureData <= 450 ){
   //valve close
   digitalWrite(in1, HIGH);
   digitalWrite(in2, LOW);
   analogWrite(enA ,200);
-  delay(350);
+  delay(800);
   digitalWrite(in1, LOW);
 
   // sprinkler stop;
   digitalWrite(in3, LOW);
   digitalWrite(in4, LOW);
-
-  // turn on green led
+// turn on green led
   digitalWrite(greenLED, HIGH);
   
 }
+
+
 // smoke sensor
 if(analogSmoke < sensorthres){
   digitalWrite(beep, LOW);
